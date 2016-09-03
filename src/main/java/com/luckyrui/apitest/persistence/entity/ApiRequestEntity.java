@@ -1,6 +1,7 @@
 package com.luckyrui.apitest.persistence.entity;
 
 import java.io.IOException;
+import java.util.HashMap;
 
 import com.luckyrui.exception.HttpClientException;
 import com.luckyrui.utils.HttpClientUtil;
@@ -27,14 +28,15 @@ public class ApiRequestEntity extends BaseEntity {
 	 * 构造:所有参数
 	 * 
 	 * @param uri
-	 * @param post
+	 * @param port
 	 * @param method
 	 * @param headers
 	 * @param params
 	 */
-	public ApiRequestEntity(String uri, String post, int method, Headers headers, Params params) {
+	public ApiRequestEntity(String apiName, String uri, String port, int method, Headers headers, Params params) {
+		setApiName(apiName);
 		setUri(uri);
-		setPost(post);
+		setPort(port);
 		setMethod(method);
 		setHeaders(headers);
 		setParams(params);
@@ -83,7 +85,15 @@ public class ApiRequestEntity extends BaseEntity {
 	 */
 	public static final Integer REQUEST_METHOD_POST = 1;
 
+	/**
+	 * 响应文本
+	 */
 	private String responseStr;
+
+	/**
+	 * 接口名称
+	 */
+	private String apiName;
 
 	/**
 	 * 请求地址
@@ -92,7 +102,7 @@ public class ApiRequestEntity extends BaseEntity {
 	/**
 	 * 请求端口
 	 */
-	private String post = "80";
+	private String port = "80";
 	/**
 	 * 请求方式
 	 */
@@ -112,6 +122,14 @@ public class ApiRequestEntity extends BaseEntity {
 		return uri;
 	}
 
+	public String getApiName() {
+		return apiName;
+	}
+
+	public void setApiName(String apiName) {
+		this.apiName = apiName;
+	}
+
 	public String getResponseStr() {
 		return responseStr;
 	}
@@ -124,12 +142,12 @@ public class ApiRequestEntity extends BaseEntity {
 		this.uri = uri;
 	}
 
-	public String getPost() {
-		return post;
+	public String getPort() {
+		return port;
 	}
 
-	public void setPost(String post) {
-		this.post = post;
+	public void setPort(String port) {
+		this.port = port;
 	}
 
 	public Integer getMethod() {
@@ -166,18 +184,22 @@ public class ApiRequestEntity extends BaseEntity {
 	 * @date 2016年8月30日 下午10:05:30
 	 * @version persistence
 	 */
-	public String sendRequest() {
-		try {
-			if (method == REQUEST_METHOD_GET) {
-				responseStr = __sendGetRequest();
-			} else if (method == REQUEST_METHOD_POST) {
-				responseStr = __sendPostRequest();
+	public void sendRequest() {
+		new Thread() {
+			@Override
+			public void run() {
+				try {
+					if (method == REQUEST_METHOD_GET) {
+						responseStr = __sendGetRequest();
+					} else if (method == REQUEST_METHOD_POST) {
+						responseStr = __sendPostRequest();
+					}
+					System.out.println(responseStr);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			return responseStr;
-		}
-		return responseStr;
+		}.start();
 	}
 
 	/**
@@ -192,9 +214,10 @@ public class ApiRequestEntity extends BaseEntity {
 	 */
 	private String __sendPostRequest() throws IOException, HttpClientException {
 		if (null == headers) {
-			return HttpClientUtil.post(uri, params.getPostParams());
+			return HttpClientUtil.post(uri, null == params ? new HashMap<String, String>() : params.getPostParams());
 		} else {
-			return HttpClientUtil.post(uri, headers.getHeaders(), params.getPostParams());
+			return HttpClientUtil.post(uri, headers.getHeaders(),
+					null == params ? new HashMap<String, String>() : params.getPostParams());
 		}
 	}
 
@@ -209,7 +232,17 @@ public class ApiRequestEntity extends BaseEntity {
 	 * @throws IOException
 	 */
 	private String __sendGetRequest() throws IOException, HttpClientException {
-		return HttpClientUtil.get(uri + params.getGetParams());
+		String rqUrl =uri + (params == null ? "" : params.getGetParams());
+		System.out.println(rqUrl);
+		return HttpClientUtil.get(rqUrl);
+	}
+
+	@Override
+	public String toString() {
+		String rtn = String.format("{\n名称:%s\nurl:%s\nmethod:%s\nheaders:%s\nparams:%s\n}\n", apiName, uri, method,
+				headers == null ? "" : headers.toString(), params == null ? "" : params.toString());
+		return rtn;
+
 	}
 
 }

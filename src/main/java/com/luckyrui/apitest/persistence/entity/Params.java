@@ -1,5 +1,6 @@
 package com.luckyrui.apitest.persistence.entity;
 
+import java.util.Iterator;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -76,7 +77,7 @@ public class Params extends BaseEntity {
 			throw new NullPointerException(paramsStr + " can not be null");
 		}
 		Params p = new Params();
-		String[] _params = new String[] { "paramsStr" };
+		String[] _params = new String[] { paramsStr };
 		if (paramsStr.indexOf('&') > 0) {
 			_params = paramsStr.split("&");
 		}
@@ -106,6 +107,7 @@ public class Params extends BaseEntity {
 
 	/**
 	 * 获取get请求参数
+	 * 
 	 * @return
 	 * @author chenrui
 	 * @date 2016年8月30日 下午9:23:38
@@ -118,16 +120,30 @@ public class Params extends BaseEntity {
 		}
 		return rtn;
 	}
-	
+
 	/**
 	 * 获取post请求参数
+	 * 
 	 * @return
 	 * @author chenrui
 	 * @date 2016年8月30日 下午9:24:44
 	 * @version persistence
 	 */
-	public Map<String, String> getPostParams(){
+	public Map<String, String> getPostParams() {
 		return paramsMap;
+	}
+
+	@Override
+	public String toString() {
+		StringBuffer sb = new StringBuffer();
+		Iterator<String> keys = paramsMap.keySet().iterator();
+		while (keys.hasNext()) {
+			String key = (String) keys.next();
+			sb.append(key + ":" + paramsMap.get(key));
+			sb.append(keys.hasNext() ? "," : "");
+		}
+		return sb.toString();
+
 	}
 
 }

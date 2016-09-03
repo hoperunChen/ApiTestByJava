@@ -1,5 +1,6 @@
 package com.luckyrui.apitest.persistence.entity;
 
+import java.util.Iterator;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -31,7 +32,9 @@ public class Headers extends BaseEntity {
 
 	/**
 	 * 使用json字符串创建header
-	 * @param headerStr jsonString
+	 * 
+	 * @param headerStr
+	 *            jsonString
 	 */
 	public Headers(String headerStr) {
 		try {
@@ -40,15 +43,16 @@ public class Headers extends BaseEntity {
 				headersMap.put(key, jo.getString(key));
 			}
 		} catch (JSONException e) {
-			throw new JSONException(" "+headerStr+"  is not a json string");
+			throw new JSONException(" " + headerStr + "  is not a json string");
 		}
 	}
-	
+
 	/**
 	 * 通过map创建header
-	 * @param map 
+	 * 
+	 * @param map
 	 */
-	public Headers(Map<String, String> map){
+	public Headers(Map<String, String> map) {
 		headersMap = new ConcurrentHashMap<>(map);
 	}
 
@@ -69,48 +73,64 @@ public class Headers extends BaseEntity {
 		}
 		headersMap.put(key.trim(), value.trim());
 	}
-	
+
 	/**
 	 * 删除header
+	 * 
 	 * @param key
 	 * @author chenrui
 	 * @date 2016年8月30日 下午12:25:02
 	 * @version persistence
 	 */
-	public void removeHeader(String key){
-		if(CheckUtil.isEmpty(key))
-			return ;
-		if(headersMap == null){
+	public void removeHeader(String key) {
+		if (CheckUtil.isEmpty(key))
+			return;
+		if (headersMap == null) {
 			headersMap = new ConcurrentHashMap<String, String>();
 		}
 		headersMap.remove(key);
 	}
-	
+
 	/**
 	 * 获取header
+	 * 
 	 * @param key
 	 * @author chenrui
 	 * @date 2016年8月30日 下午12:25:02
 	 * @version persistence
 	 */
-	public String getHeader(String key){
-		if(CheckUtil.isEmpty(key))
+	public String getHeader(String key) {
+		if (CheckUtil.isEmpty(key))
 			return null;
-		if(headersMap == null){
+		if (headersMap == null) {
 			headersMap = new ConcurrentHashMap<String, String>();
 			return null;
 		}
 		return headersMap.get(key);
 	}
-	
+
 	/**
 	 * 获取headers
+	 * 
 	 * @return
 	 * @author chenrui
 	 * @date 2016年8月30日 下午10:02:55
 	 * @version 2016_Anniversary
 	 */
-	public Map<String, String> getHeaders(){
+	public Map<String, String> getHeaders() {
 		return headersMap;
 	}
+
+	@Override
+	public String toString() {
+		StringBuffer sb = new StringBuffer();
+		Iterator<String> keys = headersMap.keySet().iterator();
+		while (keys.hasNext()) {
+			String key = (String) keys.next();
+			sb.append(key + ":" + headersMap.get(key));
+			sb.append(keys.hasNext() ? "," : "");
+		}
+		return sb.toString();
+	}
+
 }
