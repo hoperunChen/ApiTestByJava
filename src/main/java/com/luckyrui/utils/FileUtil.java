@@ -19,6 +19,17 @@ import com.alibaba.fastjson.JSONObject;
 public class FileUtil {
 	
 	/**
+	 * 获取系统所在目录
+	 * @return
+	 * @author chenrui
+	 * @date 2016年9月8日 下午7:22:40
+	 * @version 2016_Anniversary
+	 */
+	public String getProjectPath(){
+		return this.getClass().getResource("/").getPath();
+	}
+	
+	/**
 	 * 读取文件内容
 	 * @param fileName
 	 * @return

@@ -54,8 +54,8 @@ public class HttpClientUtil {
 	 */
 	static {
 		ProfileUtil profileUtil = ProfileUtil.getInstance();
-		String _timeout = profileUtil.read(PRO_FILE_PATH, "client.timeout");
-		String _retryTimes = profileUtil.read(PRO_FILE_PATH, "client.retry_times");
+		String _timeout = profileUtil.readInProject(PRO_FILE_PATH, "client.timeout");
+		String _retryTimes = profileUtil.readInProject(PRO_FILE_PATH, "client.retry_times");
 		if (!CheckUtil.isEmpty(_timeout)) {
 			timeout = Integer.parseInt(_timeout);
 		}

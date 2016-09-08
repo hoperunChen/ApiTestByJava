@@ -1,5 +1,7 @@
 package com.luckyrui.utils;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -23,7 +25,7 @@ public class ProfileUtil {
 	}
 
 	/**
-	 * 读取配置文件配置
+	 * 读取配置文件配置(工程目录下)
 	 * 
 	 * @param filename
 	 * @param key
@@ -32,8 +34,7 @@ public class ProfileUtil {
 	 * @date 2016年8月29日 下午1:53:06
 	 * @version 2016_Anniversary
 	 */
-	public String read(String filename, String key) {
-
+	public String readInProject(String filename, String key) {
 		// 非静态方法时使用：
 		InputStream path = this.getClass().getResourceAsStream("/" + filename);
 
@@ -49,7 +50,62 @@ public class ProfileUtil {
 
 		return value;
 	}
+	
+	/**
+	 * 读取配置文件配置(工程目录下)
+	 * 
+	 * @param filename
+	 * @param key
+	 * @return
+	 * @author chenrui
+	 * @date 2016年8月29日 下午1:53:06
+	 * @version 2016_Anniversary
+	 * @throws FileNotFoundException 
+	 */
+	public String readInSystem(String filename, String key) throws FileNotFoundException {
+		// 非静态方法时使用：
+		InputStream path = new FileInputStream(filename);
 
+		Properties pros = new Properties();
+		try {
+			pros.load(path);
+		} catch (IOException ex) {
+			log.error("配置文件 " + filename + " 不存在！");
+			System.out.println("资源文件不存在");
+		}
+
+		String value = pros.getProperty(key);
+
+		return value;
+	}
+
+	/**
+	 * 写入配置文件(工程目录下)
+	 * 
+	 * @param filename
+	 * @param key
+	 * @return
+	 * @author chenrui
+	 * @date 2016年8月29日 下午1:53:06
+	 * @version 2016_Anniversary
+	 * @throws IOException
+	 */
+	public void wirteInProject(String filename, String key, String value) throws IOException {
+		try {
+			InputStream in = this.getClass().getResourceAsStream("/" + filename);
+			Properties pros = new Properties();
+			pros.load(in);
+			in.close();
+			pros.setProperty(key, value);
+			FileOutputStream out = new FileOutputStream(this.getClass().getResource("/" + filename).getPath(), true);
+			pros.store(out, "sdfsdf");
+			out.close();
+		} catch (IOException ex) {
+			log.error("配置文件 " + filename + " 不存在！");
+			System.out.println("资源文件不存在");
+		}
+	}
+	
 	/**
 	 * 写入配置文件
 	 * 
@@ -61,14 +117,14 @@ public class ProfileUtil {
 	 * @version 2016_Anniversary
 	 * @throws IOException
 	 */
-	public void wirte(String filename, String key, String value) throws IOException {
+	public void wirteInSystem(String filename, String key, String value) throws IOException {
 		try {
-			InputStream in = this.getClass().getResourceAsStream("/" + filename);
+			InputStream in = new FileInputStream(filename);
 			Properties pros = new Properties();
 			pros.load(in);
 			in.close();
 			pros.setProperty(key, value);
-			FileOutputStream out = new FileOutputStream(this.getClass().getResource("/" + filename).getPath(), true);
+			FileOutputStream out = new FileOutputStream(filename, true);
 			pros.store(out, "sdfsdf");
 			out.close();
 		} catch (IOException ex) {
