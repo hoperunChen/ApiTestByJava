@@ -1,12 +1,14 @@
 # ApiTestByJava
 一个接口测试工具
 ## 安装方式
-* 安装jdk
-* 配置jdk环境变量
-* 下载tag目录下的jar文件放在系统任意位置
-* 将配置文件apitest.json放在jar所在目录
-* cmd进入jar文件所在位置
-* java -jar ApiTest.jar
+        1.安装jdk
+        2.配置jdk环境变量
+        3.下载tag目录下的jar文件放在系统任意位置
+        4.将配置文件apitest.json放在jar所在目录
+## 运行方式
+        1.cmd进入jar文件所在位置
+        2.java -jar ApiTest.jar
+
 ## 配置文件
 ### 配置文件说明
     [
