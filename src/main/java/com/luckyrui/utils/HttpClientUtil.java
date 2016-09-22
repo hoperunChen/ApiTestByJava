@@ -43,7 +43,7 @@ public class HttpClientUtil {
 	/**
 	 * 超时时间,默认5000
 	 */
-	private static Integer timeout = 20000;
+	private static Integer timeout = 5000;
 	/**
 	 * 重试次数,默认3次
 	 */
