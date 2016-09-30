@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.util.Scanner;
 
 import com.alibaba.fastjson.JSONArray;
-import com.luckyrui.apitest.fn.ApiRequestFn;
+import com.luckyrui.apitest.service.fn.ApiRequestFn;
 import com.luckyrui.exception.HttpClientException;
 import com.luckyrui.utils.FileUtil;
 import com.luckyrui.utils.ProfileUtil;

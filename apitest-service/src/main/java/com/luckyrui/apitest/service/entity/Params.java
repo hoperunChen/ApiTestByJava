@@ -1,4 +1,4 @@
-package com.luckyrui.apitest.persistence.entity;
+package com.luckyrui.apitest.service.entity;
 
 import java.util.Iterator;
 import java.util.Map;

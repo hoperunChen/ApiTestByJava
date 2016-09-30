@@ -1,4 +1,4 @@
-package com.luckyrui.apitest.fn;
+package com.luckyrui.apitest.service.fn;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -10,9 +10,9 @@ import org.apache.commons.logging.LogFactory;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.luckyrui.apitest.persistence.entity.ApiRequestEntity;
-import com.luckyrui.apitest.persistence.entity.Headers;
-import com.luckyrui.apitest.persistence.entity.Params;
+import com.luckyrui.apitest.service.entity.ApiRequestEntity;
+import com.luckyrui.apitest.service.entity.Headers;
+import com.luckyrui.apitest.service.entity.Params;
 import com.luckyrui.utils.CheckUtil;
 import com.luckyrui.utils.RandomUtil;
 import com.luckyrui.utils.StringUtil;
