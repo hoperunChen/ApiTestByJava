@@ -33,7 +33,7 @@ public class ApiRequestEntity extends BaseEntity {
 	 * @param headers
 	 * @param params
 	 */
-	public ApiRequestEntity(String apiName, String uri, String port, int method, Headers headers, Params params) {
+	public ApiRequestEntity(long id,String apiName, String uri, String port, int method, Headers headers, Params params) {
 		setApiName(apiName);
 		setUri(uri);
 		setPort(port);
@@ -89,6 +89,11 @@ public class ApiRequestEntity extends BaseEntity {
 	 * 响应文本
 	 */
 	private String responseStr;
+	
+	/**
+	 * 接口id
+	 */
+	private long id;
 
 	/**
 	 * 接口名称
@@ -117,7 +122,20 @@ public class ApiRequestEntity extends BaseEntity {
 	private Params params;
 
 	/************* getter/setter ****************/
+	
+	
+	
 
+	
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+	
 	public String getUri() {
 		return uri;
 	}

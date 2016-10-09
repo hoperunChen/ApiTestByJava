@@ -1,6 +1,10 @@
 package com.luckyrui.apitest.service.fn;
 
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
+
+import org.apache.commons.codec.binary.StringUtils;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
@@ -19,7 +23,9 @@ import com.luckyrui.utils.StringUtil;
  * @date 2016年9月30日下午2:08:01
  * @version 201609
  */
-public class JsonApiRequestService extends ApiRequestService{
+public class JsonApiRequestService implements ApiRequestService{
+	
+	protected Map<String, ApiRequestEntity> requests = new HashMap<String, ApiRequestEntity>();
 	
 	private JSONArray ja;
 	
@@ -27,6 +33,7 @@ public class JsonApiRequestService extends ApiRequestService{
 
 	public JsonApiRequestService(JSONArray ja) throws Exception {
 		this.ja = ja;
+		parseApi();
 	}
 	
 	/**
@@ -41,7 +48,6 @@ public class JsonApiRequestService extends ApiRequestService{
 	protected void parseApi() throws Exception {
 		if (CheckUtil.isEmpty(ja)) {
 			log.error("方法入参:ja不能为空");
-			return;
 		}
 		String _temp = "";
 		log.info("开始解析配置" + ja.toJSONString());
@@ -66,7 +72,8 @@ public class JsonApiRequestService extends ApiRequestService{
 				continue;
 			}
 			_temp += (name);
-			requests.put(randomUtil.genString(4, 2),new ApiRequestEntity(name, uri, port, methodI, parseHeaders(headers), parseParams(params)));
+			String id = randomUtil.genString(4, 2);
+			requests.put(id,new ApiRequestEntity(Long.parseLong(id),name, uri, port, methodI, parseHeaders(headers), parseParams(params)));
 		}
 	}
 	
@@ -86,5 +93,26 @@ public class JsonApiRequestService extends ApiRequestService{
 		Params params = Params.getParamsByParamsStr(paramStr);
 		return params;
 	}
+	
+	/**
+	 * 显示api列表
+	 * 
+	 * @return
+	 * @author chenrui
+	 * @date 2016年9月3日 下午5:38:23
+	 * @version 2016_Anniversary
+	 */
+	public String showApiList() {
+		StringBuffer rtn = new StringBuffer();
+		for (String key : requests.keySet()) {
+			rtn.append(key + ":" + requests.get(key).toString() + "\n");
+		}
+		return rtn.toString();
+	}
+
+	public void request(String key) {
+		requests.get(key).sendRequest();
+	}
+	
 
 }

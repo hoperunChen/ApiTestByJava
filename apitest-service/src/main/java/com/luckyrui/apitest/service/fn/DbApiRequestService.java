@@ -1,15 +1,17 @@
 package com.luckyrui.apitest.service.fn;
 
-public class DbApiRequestService extends ApiRequestService{
+public class DbApiRequestService implements ApiRequestService{
 
 	@Override
-	protected void parseApi() throws Exception {
+	public String showApiList() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void request(String key) {
+		// TODO Auto-generated method stub
 		
 	}
-	
-	
-
-	
-	
 
 }

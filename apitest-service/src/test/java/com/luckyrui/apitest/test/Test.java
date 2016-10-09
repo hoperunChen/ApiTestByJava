@@ -13,8 +13,8 @@ public class Test {
 
 	public static void main(String[] args) throws UnsupportedEncodingException {
 //		takePrize();
-//		login();
-		System.out.println(new Date().getTime());
+		login();
+//		System.out.println(new Date().getTime());
 	}
 	
 	private static void login(){
