@@ -116,7 +116,7 @@ public class Params extends BaseEntity {
 	public String getGetParams() {
 		String rtn = "?";
 		for (String key : paramsMap.keySet()) {
-			rtn += key + "=" + paramsMap.get(key);
+			rtn += key + "=" + paramsMap.get(key) + "&";
 		}
 		return rtn;
 	}

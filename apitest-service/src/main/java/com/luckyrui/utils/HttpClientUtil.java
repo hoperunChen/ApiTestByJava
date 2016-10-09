@@ -211,7 +211,7 @@ public class HttpClientUtil {
 	 * @return
 	 */
 	private static CloseableHttpResponse sendRequest(CloseableHttpClient httpclient, HttpUriRequest httpost) {
-		logger.info("execute post...");
+		logger.info("execute request...");
 		CloseableHttpResponse response = null;
 
 		try {

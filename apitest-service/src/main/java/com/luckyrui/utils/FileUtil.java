@@ -1,6 +1,7 @@
 package com.luckyrui.utils;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -26,7 +27,17 @@ public class FileUtil {
 	 * @version 2016_Anniversary
 	 */
 	public String getProjectPath(){
-		return this.getClass().getResource("/").getPath();
+		System.out.println(this.getClass());
+//		return this.getClass().getResource("/").getPath();\
+//		String _path = this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath();
+//		return _path.substring(0, _path.lastIndexOf(File.separator)+1);
+		File directory = new File("");// 参数为空
+		try {
+			return directory.getCanonicalPath()+File.separator;
+		} catch (IOException e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 	
 	/**
