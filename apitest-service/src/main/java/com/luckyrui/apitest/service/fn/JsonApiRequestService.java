@@ -4,7 +4,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.apache.commons.codec.binary.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
@@ -23,7 +24,10 @@ import com.luckyrui.utils.StringUtil;
  * @date 2016年9月30日下午2:08:01
  * @version 201609
  */
-public class JsonApiRequestService implements ApiRequestService{
+public class JsonApiRequestService{
+	
+	static Log log = LogFactory.getLog("JsonApiRequestService.class");
+
 	
 	protected Map<String, ApiRequestEntity> requests = new HashMap<String, ApiRequestEntity>();
 	
@@ -77,6 +81,14 @@ public class JsonApiRequestService implements ApiRequestService{
 		}
 	}
 	
+	/**
+	 * 解析headers
+	 * @param header
+	 * @return
+	 * @author chenrui
+	 * @date 2016年10月10日 上午11:06:00
+	 * @version 201610
+	 */
 	private Headers parseHeaders(String header) {
 		if (CheckUtil.isEmpty(header)) {
 			return null;
@@ -86,6 +98,15 @@ public class JsonApiRequestService implements ApiRequestService{
 		return headers;
 	}
 
+	/**
+	 * 解析params
+	 * @param paramStr
+	 * @return
+	 * @throws Exception
+	 * @author chenrui
+	 * @date 2016年10月10日 上午11:05:53
+	 * @version 201610
+	 */
 	private Params parseParams(String paramStr) throws Exception {
 		if (CheckUtil.isEmpty(paramStr)) {
 			return null;

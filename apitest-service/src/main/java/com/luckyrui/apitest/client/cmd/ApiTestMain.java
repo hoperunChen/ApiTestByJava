@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.util.Scanner;
 
 import com.alibaba.fastjson.JSONArray;
-import com.luckyrui.apitest.service.fn.ApiRequestService;
 import com.luckyrui.apitest.service.fn.JsonApiRequestService;
 import com.luckyrui.exception.HttpClientException;
 import com.luckyrui.utils.FileUtil;
@@ -24,7 +23,7 @@ public class ApiTestMain {
 			JSONArray ja = fu.getJsonArrFile(apiConfigPath);
 			System.out.println("已加载配置文件:" + apiConfigPath);
 			System.out.println("开始解析解析.....");
-			ApiRequestService rf = new JsonApiRequestService(ja);
+			JsonApiRequestService rf = new JsonApiRequestService(ja);
 			System.out.println(rf.showApiList());
 			System.out.println("输入要调用的接口:id");
 			String key = in.next();

@@ -73,7 +73,6 @@ public class ApiRequestEntity extends BaseEntity {
 	 */
 	public ApiRequestEntity(String uri) {
 		setUri(uri);
-		setParams(params);
 	}
 
 	/**

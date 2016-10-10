@@ -1,8 +1,6 @@
 package com.luckyrui.apitest.test;
 
 import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.net.URLEncoder;
 import java.util.Date;
 
 import com.luckyrui.apitest.service.entity.ApiRequestEntity;

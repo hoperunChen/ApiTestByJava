@@ -1,7 +1,9 @@
 package com.luckyrui.apitest.service.entity;
 
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -24,10 +26,49 @@ public class Params extends BaseEntity {
 	 */
 	private static final long serialVersionUID = 1457883818930454711L;
 
-	private ConcurrentMap<String, String> paramsMap = new ConcurrentHashMap<String, String>();
+	private class ParamsMap {
+		private ConcurrentMap<String, Param> params = new ConcurrentHashMap<String, Param>();
+
+		public ParamsMap() {
+		}
+
+		public ParamsMap(Map<String, String> map) {
+			for (String key : map.keySet()) {
+				Param p = new Param(key, map.get(key));
+				params.putIfAbsent(key, p);
+			}
+		}
+
+		public void put(String key, String value) {
+			Param param = new Param(key, value);
+			params.put(key, param);
+		}
+
+
+		public String get(String key) {
+			Param param = params.get(key);
+			return param.getValue();
+		}
+
+		public Map<String, String> getPostParams() {
+			Map<String, String> rtn = new HashMap<String, String>();
+			for (String key : params.keySet()) {
+				rtn.put(key, params.get(key).getValue());
+			}
+			return rtn;
+		}
+
+		public Set<String> keySet() {
+			return params.keySet();
+		}
+
+
+	}
+
+	private ParamsMap paramsMap;
 
 	public Params() {
-
+		paramsMap = new ParamsMap();
 	}
 
 	/**
@@ -36,7 +77,7 @@ public class Params extends BaseEntity {
 	 * @param map
 	 */
 	public Params(Map<String, String> map) {
-		paramsMap = new ConcurrentHashMap<>(map);
+		paramsMap = new ParamsMap(map);
 	}
 
 	/**
@@ -130,7 +171,7 @@ public class Params extends BaseEntity {
 	 * @version persistence
 	 */
 	public Map<String, String> getPostParams() {
-		return paramsMap;
+		return paramsMap.getPostParams();
 	}
 
 	@Override

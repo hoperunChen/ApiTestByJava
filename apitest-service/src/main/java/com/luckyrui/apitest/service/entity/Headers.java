@@ -1,7 +1,9 @@
 package com.luckyrui.apitest.service.entity;
 
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -24,10 +26,52 @@ public class Headers extends BaseEntity {
 	 */
 	private static final long serialVersionUID = -9173762164897003692L;
 
-	private ConcurrentMap<String, String> headersMap = new ConcurrentHashMap<String, String>();
+	private class HeadersMap {
+		private ConcurrentMap<String, Header> headers = new ConcurrentHashMap<String, Header>();
+
+		public HeadersMap() {
+
+		}
+
+		public HeadersMap(Map<String, String> map) {
+			for (String key : map.keySet()) {
+				Header p = new Header(key, map.get(key));
+				headers.put(key, p);
+			}
+		}
+
+		public void put(String key, String value) {
+			Header header = new Header(key, value);
+			headers.put(key, header);
+		}
+
+		public void remove(String key) {
+			headers.remove(key);
+		}
+
+		public String get(String key) {
+			Header header = headers.get(key);
+			return header.getValue();
+		}
+
+		public Map<String, String> getHeaders() {
+			Map<String, String> rtn = new HashMap<String, String>();
+			for (String key : headers.keySet()) {
+				rtn.put(key, headers.get(key).getValue());
+			}
+			return rtn;
+		}
+
+		public Set<String> keySet() {
+			return headers.keySet();
+		}
+
+	}
+
+	private HeadersMap headersMap;
 
 	public Headers() {
-
+		headersMap = new HeadersMap();
 	}
 
 	/**
@@ -53,7 +97,7 @@ public class Headers extends BaseEntity {
 	 * @param map
 	 */
 	public Headers(Map<String, String> map) {
-		headersMap = new ConcurrentHashMap<>(map);
+		headersMap = new HeadersMap(map);
 	}
 
 	/**
@@ -69,7 +113,7 @@ public class Headers extends BaseEntity {
 		if (CheckUtil.isEmpty(key, value))
 			throw new NullPointerException("key and value can not be null");
 		if (headersMap == null) {
-			headersMap = new ConcurrentHashMap<String, String>();
+			headersMap = new HeadersMap();
 		}
 		headersMap.put(key.trim(), value.trim());
 	}
@@ -86,7 +130,7 @@ public class Headers extends BaseEntity {
 		if (CheckUtil.isEmpty(key))
 			return;
 		if (headersMap == null) {
-			headersMap = new ConcurrentHashMap<String, String>();
+			headersMap = new HeadersMap();
 		}
 		headersMap.remove(key);
 	}
@@ -103,7 +147,7 @@ public class Headers extends BaseEntity {
 		if (CheckUtil.isEmpty(key))
 			return null;
 		if (headersMap == null) {
-			headersMap = new ConcurrentHashMap<String, String>();
+			headersMap = new HeadersMap();
 			return null;
 		}
 		return headersMap.get(key);
@@ -118,7 +162,7 @@ public class Headers extends BaseEntity {
 	 * @version 2016_Anniversary
 	 */
 	public Map<String, String> getHeaders() {
-		return headersMap;
+		return headersMap.getHeaders();
 	}
 
 	@Override
