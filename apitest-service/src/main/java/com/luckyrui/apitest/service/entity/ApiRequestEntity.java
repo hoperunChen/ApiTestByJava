@@ -3,7 +3,7 @@ package com.luckyrui.apitest.service.entity;
 import java.io.IOException;
 import java.util.HashMap;
 
-import com.luckyrui.exception.HttpClientException;
+import com.luckyrui.base.exception.HttpClientException;
 import com.luckyrui.utils.HttpClientUtil;
 
 /**
