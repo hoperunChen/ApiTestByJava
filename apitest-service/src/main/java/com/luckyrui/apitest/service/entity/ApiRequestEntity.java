@@ -3,6 +3,7 @@ package com.luckyrui.apitest.service.entity;
 import java.io.IOException;
 import java.util.HashMap;
 
+import com.luckyrui.base.callback.CallbackAble;
 import com.luckyrui.base.exception.HttpClientException;
 import com.luckyrui.utils.HttpClientUtil;
 
@@ -195,14 +196,15 @@ public class ApiRequestEntity extends BaseEntity {
 
 	/**
 	 * 发送请求
-	 * 
+	 * @param cb 回调函数,不需要回调可以传空
 	 * @return
 	 * @author chenrui
 	 * @date 2016年8月30日 下午10:05:30
 	 * @version persistence
 	 */
-	public void sendRequest() {
+	public void sendRequest(@SuppressWarnings("rawtypes") final CallbackAble cb) {
 		new Thread() {
+			@SuppressWarnings("unchecked")
 			@Override
 			public void run() {
 				try {
@@ -212,11 +214,25 @@ public class ApiRequestEntity extends BaseEntity {
 						responseStr = __sendPostRequest();
 					}
 					System.out.println(responseStr);
+					if(null != cb){
+						cb.call(responseStr);
+					}
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
 		}.start();
+	}
+	
+	/**
+	 * 发送请求
+	 * 
+	 * @author chenrui
+	 * @date 2016年11月3日 上午10:55:55
+	 * @version 201611
+	 */
+	public void sendRequest() {
+		sendRequest(null);
 	}
 
 	/**
